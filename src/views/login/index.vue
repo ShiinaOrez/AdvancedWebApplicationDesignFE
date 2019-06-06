@@ -3,7 +3,7 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">F**king 管理系统</h3>
       </div>
 
       <el-form-item prop="username">
@@ -41,7 +41,18 @@
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
+      <el-form-item label="就读类型">
+        <el-radio-group 
+          v-model="loginForm.role"
+          ref="role"
+          tabindex="3">
+          <el-radio label="学生" value="user"/>
+          <el-radio label="班主任" value="header"/>
+          <el-radio label="管理员" value="admin"/>
+        </el-radio-group>
+      </el-form-item>
+
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
 
       <div class="tips">
         <span style="margin-right:20px;">username: admin</span>
@@ -72,18 +83,27 @@ export default {
         callback()
       }
     }
+    const validateRole = (rule, value, callback) => {
+      if (!(value == 'user' || value == 'admin' || value == 'header')) {
+        callback(new Error('The role can not be empty or invalid.'))
+      } else {
+        callback()
+      }
+    }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: '',
+        password: '',
+        role: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
+        role: [{required: true, trigger: 'blur', validator: validateRole}]
       },
       loading: false,
       passwordType: 'password',
-      redirect: undefined
+      redirect: '/'
     }
   },
   watch: {

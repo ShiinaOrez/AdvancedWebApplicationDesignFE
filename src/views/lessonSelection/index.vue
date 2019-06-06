@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -28,9 +29,12 @@
           {{ scope.row.location }}
         </template>
       </el-table-column>
-      <el-table-column width="178">
-        <el-button type="primary" @click.native.prevent="onEdit">编辑</el-button>
-        <el-button type="primary" @click.native.prevent="onShow">查看</el-button>
+      <el-table-column width="95">
+        <template slot-scope="scope">
+          <el-button type="primary" @click.native.prevent="selectLesson(scope.row.index)">
+            {{ scope.row.selected ? '取消' : '选课' }}  
+          </el-button>
+        </template>
       </el-table-column>
     </el-table>
   </div>
@@ -38,6 +42,7 @@
 
 <script>
 import { getList } from '@/api/table'
+import { updateLessonCache } from '@/api/lesson'
 
 export default {
   data() {
@@ -54,9 +59,17 @@ export default {
       this.listLoading = true
       getList().then(response => {
         this.list = response.data.items
+        for (let i=0; i<this.list.length; i++) {
+            this.list[i].index = i
+            this.list[i].selected = false
+        }
         this.listLoading = false
       })
+      this.loading = false
+    },
+    selectLesson(index) {
+        this.list[index].selected = !this.list[index].selected
     }
-  },
+  }
 }
 </script>

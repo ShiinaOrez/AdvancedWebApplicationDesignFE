@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -29,8 +30,10 @@
         </template>
       </el-table-column>
       <el-table-column width="178">
-        <el-button type="primary" @click.native.prevent="onEdit">编辑</el-button>
-        <el-button type="primary" @click.native.prevent="onShow">查看</el-button>
+        <template slot-scope="scope">
+          <el-button type="primary" @click.native.prevent="onWatch(scope.row.classNumber)">编辑</el-button>
+          <el-button type="primary" @click.native.prevent="onWatch(scope.row.classNumber)">查看</el-button>
+        </template>
       </el-table-column>
     </el-table>
   </div>
@@ -38,6 +41,7 @@
 
 <script>
 import { getList } from '@/api/table'
+import { updateLessonCache } from '@/api/lesson'
 
 export default {
   data() {
@@ -56,7 +60,17 @@ export default {
         this.list = response.data.items
         this.listLoading = false
       })
+      this.loading = false
+    },
+    onWatch(lessonNum) {
+      this.loading = true
+      console.log("The lesson number: ", lessonNum)
+      updateLessonCache(lessonNum).then(response => {
+        this.loading = false
+      })
+      this.loading = false
+      this.$router.push({path: '/lesson/info'})
     }
-  },
+  }
 }
 </script>

@@ -1,11 +1,12 @@
-import { login, logout, getInfo } from '@/api/user'
+import { login, logout, getInfo, editInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const state = {
   token: getToken(),
   name: '',
-  avatar: ''
+  avatar: '',
+  role: ''
 }
 
 const mutations = {
@@ -17,18 +18,22 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  SET_ROLE: (state, role) => {
+    state.role = role
   }
 }
 
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { username, password } = userInfo
+    const { username, password, role } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
+      login({ username: username.trim(), password: password, role: role }).then(response => {
+        const { data } = response // data but not data.token
+        commit('SET_TOKEN', data)
+        commit('SET_ROLE', role)
+        setToken(data)
         resolve()
       }).catch(error => {
         reject(error)
@@ -51,6 +56,20 @@ const actions = {
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
         resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  editInfo({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      editInfo(state.token).then(response => {
+        const { code } = response
+
+        if (code !== 20000) {
+          reject('Lack of token.')
+        }
       }).catch(error => {
         reject(error)
       })

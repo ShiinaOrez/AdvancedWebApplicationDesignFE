@@ -7,3 +7,11 @@ export function getList(params) {
     params
   })
 }
+
+export function getTeacherList(params) {
+  return request({
+    url: '/teacherTable/list',
+    method: 'get',
+    params
+  })
+}

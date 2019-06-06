@@ -16,6 +16,15 @@ export function getInfo(token) {
   })
 }
 
+export function editInfo(token, data) {
+  return request({
+    url: '/user/info',
+    method: 'put',
+    params: { token },
+    data
+  })
+}
+
 export function logout() {
   return request({
     url: '/user/logout',

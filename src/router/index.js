@@ -32,6 +32,23 @@ import Layout from '@/layout'
  */
 export const constantRoutes = [
   {
+    path: '/',
+    component: Layout,
+    redirect: '/form',
+    children: [
+      {
+        path: 'form',
+        name: '个人信息',
+        component: () => import('@/views/form/index'),
+        meta: {
+          title: '个人信息',
+          icon: 'form'
+        }
+      }
+    ]
+  },
+
+  {
     path: '/login',
     component: () => import('@/views/login/index'),
     hidden: true
@@ -44,117 +61,117 @@ export const constantRoutes = [
   },
 
   {
-    path: '/',
+    path: '/class',
     component: Layout,
-    redirect: '/dashboard',
-    children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
-    }]
-  },
-
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
+    redirect: '/class/information',
+    name: 'Class',
+    meta: { title: '班级', icon: 'nested' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        path: 'information',
+        name: 'classInformation',
+        component: () => import('@/views/class_/index'),
+        meta: { title: '班级信息', icon: 'nested' }
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
-    ]
-  },
-
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
-
-  {
-    path: '/nested',
-    component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
-    meta: {
-      title: 'Nested',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
-          }
-        ]
+        path: 'classTable',
+        name: 'classTable',
+        component: () => import('@/views/classTable/index'),
+        meta: { title: '班级序列', icon: 'nested' }
       },
       {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        meta: { title: 'menu2' }
+        path: 'newClass',
+        name: 'newClass',
+        component: () => import('@/views/newClass/index'),
+        meta: { title: '新建班级', icon: 'nested' }
       }
     ]
   },
 
   {
-    path: 'external-link',
+    path: '/student',
     component: Layout,
+    redirect: '/student/studentTable',
+    name: 'Student',
+    meta: { title: '学生', icon: 'menu' },
     children: [
       {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
+        path: 'studentTable',
+        name: 'studentTable',
+        component: () => import('@/views/studentTable/index'),
+        meta: { title: '学生信息表', icon: 'table' }
+      }
+    ]
+  },
+
+  {
+    path: '/lesson',
+    component: Layout,
+    redirect: '/lesson/lessonTable',
+    name: 'Lesson',
+    meta: { title: '课程', icon: 'example' },
+    children: [
+    //      {
+    //        path: 'table',
+    //        name: 'Table',
+    //        component: () => import('@/views/table/index'),
+    //        meta: { title: 'Table', icon: 'table' }
+    //      },
+      {
+        path: 'lessonTable',
+        name: 'lessonTable',
+        component: () => import('@/views/lessonTable/index'),
+        meta: { title: '课程信息表', icon: 'table' }
+      },
+      {
+        path: 'info',
+        name: 'lessonInformation',
+        component: () => import('@/views/lesson/index'),
+        meta: { title: '课程信息', icon: 'form' }
+      },
+      {
+        path: 'selection',
+        name: 'lessonSelection',
+        component: () => import('@/views/lessonSelection/index'),
+        meta: { title: '选课', icon: 'link' }
+      }
+    ]
+  },
+
+  {
+    path: '/teacher',
+    component: Layout,
+    redirect: '/teacher/teacherTable',
+    name: 'Teacher',
+    meta: { title: '教师', icon: 'link' },
+    children: [
+      {
+        path: 'teacherTable',
+        name: 'teacherTable',
+        component: () => import('@/views/teacherTable/index'),
+        meta: { title: '教师信息表', icon: 'table' }
+      },
+      {
+        path: 'information',
+        name: 'teacherInformation',
+        component: () => import('@/views/teacher/index'),
+        meta: { title: '教师信息', icon: 'form' }
+      }
+    ]
+  },
+
+  {
+    path: '/grade',
+    component: Layout,
+    redirect: '/grade/list',
+    name: 'Grade',
+    meta: { title: '成绩', icon: 'nested' },
+    children: [
+      {
+        path: 'list',
+        name: 'gradeList',
+        component: () => import('@/views/grade/index'),
+        meta: { title: '成绩列表', icon: 'nested' }
       }
     ]
   },
